@@ -36,8 +36,31 @@ void testCallbackObject() {
     thread.join();
 }
 
+void testLambdas() {
+    int id = 0;
+
+    id++;
+    //lambda which can't access anything outside it, for example it can't access `id` variable
+    auto f1 = []() {
+        std::cout << "Lambda f1 called" << std::endl;
+    };
+
+    ++id;
+    //lambda which does capture `id` variable but can't mutate/update it
+    auto f2 = [id]() { std::cout << "Lambda f2 called with id: " << id << std::endl; };
+
+    //lambda which not only capture `id` but can also mutate it.
+    auto f3 = [id]() mutable { std::cout << "Lambda f2 called with id: " << ++id << std::endl; };
+
+    //as lambdas are functions so we can call them
+    f1();
+    f2();
+    f3();
+}
+
 int main() {
     
-    testCallbackObject();
+    testLambdas();
+    // testCallbackObject();
     return 0;
 }
