@@ -64,9 +64,26 @@ void testLambdas() {
     std::cout << "Final value of id is after f4(): " << id << std::endl;
 }
 
+void testThreadsWithLambdas() {
+    int id = 0;
+    //lambda which not only capture `id` by reference but can also mutate it directly.
+    auto f1= [&id]() mutable { std::cout << "Lambda f1 called in thread1 with id: " << ++id << std::endl; };
+
+    std::thread thread1(f1);
+    //below thread will capture thread by copy so when it will run it will contain id=0
+    std::thread thread2([id]{
+        std::cout << "Lambda called in thread2 with id: " << id << std::endl;
+    });
+
+    std::cout << "incrementing id in main thread, new value = " << ++id << std::endl;
+    thread1.join();
+    thread2.join();
+    std::cout << "Final value of id: " << id << std::endl;
+}
+
 int main() {
     
-    testLambdas();
+    testThreadsWithLambdas();
     // testCallbackObject();
     return 0;
 }
