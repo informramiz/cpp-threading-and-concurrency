@@ -18,6 +18,7 @@ int main() {
     std::cout << "Finished worked in main" << std::endl;
 
     //wait for thread to finish
-    thread.join();
+    thread.detach();
+    // thread.join();
     return 0;
 }
