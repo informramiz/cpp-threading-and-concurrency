@@ -49,13 +49,19 @@ void testLambdas() {
     //lambda which does capture `id` variable but can't mutate/update it
     auto f2 = [id]() { std::cout << "Lambda f2 called with id: " << id << std::endl; };
 
-    //lambda which not only capture `id` but can also mutate it.
-    auto f3 = [id]() mutable { std::cout << "Lambda f2 called with id: " << ++id << std::endl; };
+    //lambda which not only capture `id` but can also mutate a COPY of it.
+    auto f3 = [id]() mutable { std::cout << "Lambda f3 called with id: " << ++id << std::endl; };
+
+    //lambda which not only capture `id` by reference but can also mutate it directly.
+    auto f4 = [&id]() mutable { std::cout << "Lambda f4 called with id: " << ++id << std::endl; };
 
     //as lambdas are functions so we can call them
     f1();
     f2();
     f3();
+    std::cout << "Final value of id is before f4(): " << id << std::endl;
+    f4();
+    std::cout << "Final value of id is after f4(): " << id << std::endl;
 }
 
 int main() {
