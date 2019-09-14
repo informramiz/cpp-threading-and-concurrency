@@ -8,9 +8,15 @@ void threadFunction() {
 
 class Vehicle {
 public:
-    void operator()() {
-        std::cout << "Vehicle object has been created" << std::endl;
+    Vehicle(int id): id(id) {
+
     }
+    void operator()() {
+        std::cout << "Vehicle # " << id << "object has been created" << std::endl;
+    }
+
+private:
+    int id;
 };
 
 int main() {
@@ -19,8 +25,7 @@ int main() {
     std::cout << "This machine supports concurrency with " << coresInThisMachine << " cores." << std::endl;
 
     //create thread
-    Vehicle vehicle;
-    std::thread thread(vehicle);
+    std::thread thread{ Vehicle(1) };
     
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
     std::cout << "Finished worked in main" << std::endl;
